@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Landing</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #fff;
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .image-wrapper {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .desktop-image {
+      display: none !important;
+    }
+
+    .mobile-image {
+      display: block !important;
+    }
+
+    @media (min-width: 1024px) {
+      .desktop-image {
+        display: block !important;
+      }
+      .mobile-image {
+        display: none !important;
+      }
+    }
+
+    .content {
+      position: fixed;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(10px);
+      max-width: 400px;
+      border-radius: 12px;
+    }
+
+    .content h1 {
+      display: none;
+    }
+
+    .content p {
+      display: none;
+    }
+
+    .email-form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .email-input {
+      padding: 12px 16px;
+      font-size: 14px;
+      border: 1px solid #ffd700;
+      border-radius: 8px;
+      font-family: inherit;
+      transition: all 0.2s;
+      background: rgba(255, 215, 0, 0.1);
+      color: #fff;
+    }
+
+    .email-input:focus {
+      outline: none;
+      border-color: #ffd700;
+      box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+      background: rgba(255, 215, 0, 0.15);
+    }
+
+    .email-input::placeholder {
+      color: #999;
+    }
+
+    .submit-btn {
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      background: #ffd700;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .submit-btn:hover {
+      background: #ffed4e;
+    }
+
+    .submit-btn:active {
+      transform: scale(0.98);
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: #fff;
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #000;
+    }
+
+    .modal p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .modal-close {
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      background: #f0f0f0;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .modal-close:hover {
+      background: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="image-wrapper">
+    <img class="mobile-image" src="./mobile.png" alt="Good You coming soon">
+    <img class="desktop-image" src="./desktop.png" alt="Good You coming soon">
+    </div>
+
+    <div class="content">
+      <form class="email-form" id="emailForm">
+        <input 
+          type="email" 
+          class="email-input" 
+          placeholder="your@email.com" 
+          required
+        >
+        <button type="submit" class="submit-btn">Notify Me</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <h2>Coming Soon</h2>
+      <p>Email collection is coming soon. Thanks for your interest!</p>
+      <button class="modal-close" id="closeBtn">Got it</button>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('emailForm');
+    const modal = document.getElementById('modal');
+    const closeBtn = document.getElementById('closeBtn');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      modal.classList.add('active');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      modal.classList.remove('active');
+      form.reset();
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+        form.reset();
+      }
+    });
+  </script>
+</body>
+</html>
